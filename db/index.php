@@ -19,9 +19,17 @@ include "../config.php";
 // $result = mysqli_query($DB, $query);
 
 /////// BETWEEN ///////
-$query = "SELECT * FROM members WHERE fee BETWEEN 200 AND 400";
-$result = mysqli_query($DB, $query);
+// $query = "SELECT * FROM members WHERE fee BETWEEN 200 AND 400";
+// $result = mysqli_query($DB, $query);
 
+/////// LIKE ///////
+// $query = "SELECT * FROM members WHERE tag LIKE '%php%'";
+// $result = mysqli_query($DB, $query);
+
+/////// GROUP ///////
+$query = "SELECT type, AVG(age) AS 'agePorcentage', SUM(fee) AS 'totalFee' ";
+$query .= "FROM members GROUP BY type";
+$result = mysqli_query($DB, $query);
 
 showAll($result);
 
