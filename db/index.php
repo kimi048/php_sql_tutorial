@@ -27,10 +27,35 @@ include "../config.php";
 // $result = mysqli_query($DB, $query);
 
 /////// GROUP ///////
-$query = "SELECT type, AVG(age) AS 'agePorcentage', SUM(fee) AS 'totalFee' ";
-$query .= "FROM members GROUP BY type";
-$result = mysqli_query($DB, $query);
+// $query = "SELECT type, AVG(age) AS 'agePorcentage', SUM(fee) AS 'totalFee' ";
+// $query .= "FROM members GROUP BY type";
+// $result = mysqli_query($DB, $query);
 
+/////// INNER, LEFT, RIGHT, CROSS ///////
+
+/////// INNER ///////
+// $query = "SELECT members.member_id, members.name, courses.course_id, courses.name ";
+// $query .= "FROM members INNER JOIN courses ON courses.name = members.name";
+// $result = mysqli_query($DB, $query);
+
+/////// LEFT ///////
+// $query = "SELECT members.member_id, members.name, ";
+// $query .= "courses.course_id, courses.name AS 'name in course'";
+// $query .= "FROM members LEFT JOIN courses USING(name)";
+// $result = mysqli_query($DB, $query);
+
+/////// RIGHT ///////
+// $query = "SELECT members.member_id, members.name, ";
+// $query .= "courses.course_id, courses.name AS 'name in course'";
+// $query .= "FROM members RIGHT JOIN courses USING(name)";
+// $result = mysqli_query($DB, $query);
+// showAll($result);
+
+/////// CROSS ///////
+$query = "SELECT members.member_id, members.name, ";
+$query .= "courses.course_id, courses.name AS 'name in course'";
+$query .= "FROM members CROSS JOIN courses";
+$result = mysqli_query($DB, $query);
 showAll($result);
 
 function showAll($result){
