@@ -1,5 +1,29 @@
 <?php
 include "config.php";
+
+function escape($data){
+    global $DB;
+    $data = trim($data);
+    $data = mysqli_real_escape_string($DB, $data);
+    return $data;
+}
+
+if(isset($_POST["email"]) && isset($_POST["password"])){
+    if(!empty($_POST["email"]) && !empty($_POST["password"])){
+        if(!$DB){
+            die("FAILED".mysqli_connect_error());
+        }else{
+            $email = escape($_POST["email"]);
+            $password = escape($_POST["password"]);
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost'=>10));
+            
+            $query = "INSERT INTO users (email, password) VALUE('$email', '$password')";
+            $result = mysqli_query($DB, $query);
+            echo "SUCCESS!!";
+        }
+    }
+}
+
 ?>
 <html>
     <head>
