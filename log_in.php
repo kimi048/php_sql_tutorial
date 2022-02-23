@@ -1,6 +1,8 @@
 <?php
 include "config.php";
 
+print_r($_SESSION);
+
 function escape($data){
     global $DB;
     $data = trim($data);
@@ -23,6 +25,9 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
                 $row = mysqli_fetch_assoc($result);
                 $verifyPassword = password_verify($password, $row["password"]);
                 if($verifyPassword){
+                    $_SESSION['logged_in'] = true;
+                    $_SESSION['user_id'] = $row['id'];
+                    $_SESSION['user_email'] = $row['email'];
                     echo "good password";
                 }else{
                     echo "bad password";
@@ -30,6 +35,14 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
             }
         }
     }
+}
+
+if(isset($_POST["logout"])){
+    $_SESSION['logged_in'] = null;
+    $_SESSION['user_id'] = null;
+    $_SESSION['user_email'] = null;
+
+    // $_SESSION = array();
 }
 
 ?>
@@ -40,7 +53,9 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
     <body>
 
         <h2>Log in</h2>
-      
+        <?
+            if(!$_SESSION['logged_in']){
+        ?>
         <form method="POST">
             <div class="row">
                 <div class="twelve columns">
@@ -64,9 +79,9 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
             </div>
             <input class="button-primary" type="submit" value="submit">
         </form>
-     
+        <? }else{ ?>
 
-            <!-- <form method="POST">
+            <form method="POST">
                 <button 
                     class="button-primary" 
                     type="submit" 
@@ -74,6 +89,6 @@ if(isset($_POST["email"]) && isset($_POST["password"])){
                     value="logout"
                 >Logout</button>
             </form>
-        -->
+       <? } ?>
     </body>
 </html>

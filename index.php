@@ -1,6 +1,8 @@
 <?php
 include "config.php";
 
+print_r($_SESSION);
+
 function escape($data){
     global $DB;
     $data = trim($data);
