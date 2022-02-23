@@ -1,7 +1,36 @@
 <?php
 include "config.php";
 
+function escape($data){
+    global $DB;
+    $data = trim($data);
+    $data = mysqli_real_escape_string($DB, $data);
+    return $data;
+}
 
+if(isset($_POST["email"]) && isset($_POST["password"])){
+    if(!empty($_POST["email"]) && !empty($_POST["password"])){
+        if(!$DB){
+            die("FAILED".mysqli_connect_error());
+        }else{
+            $email = escape($_POST["email"]);
+            $password = escape($_POST["password"]);
+            
+            $query = "SELECT * FROM users WHERE email= '$email'";
+            $result = mysqli_query($DB, $query);
+            
+            if(mysqli_num_rows($result) == 1){
+                $row = mysqli_fetch_assoc($result);
+                $verifyPassword = password_verify($password, $row["password"]);
+                if($verifyPassword){
+                    echo "good password";
+                }else{
+                    echo "bad password";
+                }
+            }
+        }
+    }
+}
 
 ?>
 <html>
